@@ -405,30 +405,32 @@ public class UserService {
 }  
 ```
 Podemos voltar a editar o código na classe `UserController` para salvar o usuário. Será necessário injetar um objeto do tipo `UserService`, então utilizar o método `userService.save()` que espera como parâmetro de entrada um objeto do tipo `User`, o objeto será persistido no banco de dados.
+
 ```java  
-package br.edu.utfpr.pb.pw44s.server.controller;  
-  
-import br.edu.utfpr.pb.pw44s.server.model.User;  
-import br.edu.utfpr.pb.pw44s.server.service.UserService;  
-import org.springframework.http.HttpStatus;  
-import org.springframework.web.bind.annotation.*;  
-  
-@RestController  
-@RequestMapping("users")  
-public class UserController {  
-  
-    private final UserService userService;  
-  
-    public UserController(UserService userService) {  
-        this.userService = userService;  
-    }  
-  
-    @PostMapping  
-    @ResponseStatus(HttpStatus.CREATED)  
-    public void createUser(@RequestBody User user) {  
-        this.userService.save(user);  
-    }  
-      
+package br.edu.utfpr.pb.pw44s.server.controller;
+
+import br.edu.utfpr.pb.pw44s.server.model.User;
+import br.edu.utfpr.pb.pw44s.server.service.UserService;
+import br.edu.utfpr.pb.pw44s.server.service.UserServiceImpl;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("users")
+public class UserController {
+
+  private final UserService userService;
+
+  public UserController(UserService userService) {
+    this.userService = userService;
+  }
+
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  public void createUser(@RequestBody User user) {
+    this.userService.save(user);
+  }
+
 }  
 ```  
 
@@ -525,33 +527,33 @@ public class GenericResponse {
 A próxima alteração de código será realizado no método `createUser()` da classe `UserController`, que agora deverá retornar um objeto do tipo `GenericResponse`. Após essa alteração o teste criado irá passar. Para visualizar o comportamento na prática a requisição pode ser realizada novamente por meio do Postman.
 
 ```java  
-package br.edu.utfpr.pb.pw44s.server.controller;  
-  
-import br.edu.utfpr.pb.pw44s.server.model.User;  
-import br.edu.utfpr.pb.pw44s.server.service.UserService;  
-import br.edu.utfpr.pb.pw44s.server.shared.GenericResponse;  
-import org.springframework.http.HttpStatus;  
-import org.springframework.http.ResponseEntity;  
-import org.springframework.web.bind.annotation.*;  
-  
-@RestController  
-@RequestMapping("users")  
-public class UserController {  
-  
-    private final UserService userService;  
-  
-    public UserController(UserService userService) {  
-        this.userService = userService;  
-    }  
-  
-    @PostMapping  
-    @ResponseStatus(HttpStatus.CREATED)  
-    public ResponseEntity<GenericResponse> createUser(@RequestBody User user) {  
-        this.userService.save(user);
-          
-        return ResponseEntity.status(HttpStatus.CREATED).body(new GenericResponse("Usuário salvo com sucesso"));  
-    }  
-  
+package br.edu.utfpr.pb.pw44s.server.controller;
+
+import br.edu.utfpr.pb.pw44s.server.model.User;
+import br.edu.utfpr.pb.pw44s.server.service.UserService;
+import br.edu.utfpr.pb.pw44s.server.shared.GenericResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("users")
+public class UserController {
+
+  private final br.edu.utfpr.pb.pw44s.server.service.UserService userService;
+
+  public UserController(br.edu.utfpr.pb.pw44s.server.service.UserService userService) {
+    this.userService = userService;
+  }
+
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  public ResponseEntity<GenericResponse> createUser(@RequestBody User user) {
+    this.userService.save(user);
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(new GenericResponse("Usuário salvo com sucesso"));
+  }
+
 } 
 ```  
 #### 2.10 Testando se a senha está criptografada
@@ -662,34 +664,35 @@ public class User {
 Com a anotação feita será delegado ao *controller* (`UserController`) validar o usuário antes da entrada no método que realiza a persistência dos dados. Será utilizada a anotação `@Valid` (importado de: `import jakarta.validation.Valid;`) antes da declaração do objeto user no método `createUser()`. Com isso o campo será validado e o cliente da API irá receber uma mensagem criada pelo Spring informando que o atributo `username` não pode ser nulo.
 
 ```java  
-package br.edu.utfpr.pb.pw44s.server.controller;  
-  
-import br.edu.utfpr.pb.pw44s.server.model.User;  
-import br.edu.utfpr.pb.pw44s.server.service.UserService;  
-import br.edu.utfpr.pb.pw44s.server.shared.GenericResponse;  
-import jakarta.validation.Valid;  
-import org.springframework.http.HttpStatus;  
-import org.springframework.http.ResponseEntity;  
-import org.springframework.web.bind.annotation.*;  
-  
-@RestController  
-@RequestMapping("users")  
-public class UserController {  
-  
-    private final UserService userService;  
-  
-    public UserController(UserService userService) {  
-        this.userService = userService;  
-    }  
-  
-    @PostMapping  
-    @ResponseStatus(HttpStatus.CREATED)  
-    public ResponseEntity<GenericResponse> createUser(@RequestBody @Valid User user) {  
-        this.userService.save(user);  
-  
-        return ResponseEntity.status(HttpStatus.CREATED).body(new GenericResponse("Usuário salvo com sucesso"));  
-    }  
-  
+package br.edu.utfpr.pb.pw44s.server.controller;
+
+import br.edu.utfpr.pb.pw44s.server.model.User;
+import br.edu.utfpr.pb.pw44s.server.service.UserService;
+import br.edu.utfpr.pb.pw44s.server.service.UserServiceImpl;
+import br.edu.utfpr.pb.pw44s.server.shared.GenericResponse;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("users")
+public class UserController {
+
+  private final UserService userService;
+
+  public UserController(UserService userService) {
+    this.userService = userService;
+  }
+
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  public ResponseEntity<GenericResponse> createUser(@RequestBody @Valid User user) {
+    this.userService.save(user);
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(new GenericResponse("Usuário salvo com sucesso"));
+  }
+
 }
 ```  
 #### 2.12 Validando os demais dados de User
@@ -972,6 +975,7 @@ package br.edu.utfpr.pb.pw44s.server.controller;
 import br.edu.utfpr.pb.pw44s.server.dto.requestdto.UserRequestDTO;
 import br.edu.utfpr.pb.pw44s.server.model.User;
 import br.edu.utfpr.pb.pw44s.server.service.UserService;
+import br.edu.utfpr.pb.pw44s.server.service.UserServiceImpl;
 import br.edu.utfpr.pb.pw44s.server.shared.GenericResponse;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -983,10 +987,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("users")
 public class UserController {
 
-  private final UserService userService;
+  private final br.edu.utfpr.pb.pw44s.server.service.UserService userService;
   private final ModelMapper modelMapper;
 
-  public UserController(UserService userService, ModelMapper modelMapper) {
+  public UserController(br.edu.utfpr.pb.pw44s.server.service.UserService userService, ModelMapper modelMapper) {
     this.userService = userService;
     this.modelMapper = modelMapper;
   }

@@ -31,5 +31,5 @@ public class ProductRequestDTO {
     private String imageUrl;
 
     @NotNull
-    private Long categoryId;
+    private Long category;
 }

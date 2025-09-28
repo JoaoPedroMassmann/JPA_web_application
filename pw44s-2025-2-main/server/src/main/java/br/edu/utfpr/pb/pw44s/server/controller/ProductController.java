@@ -1,23 +1,52 @@
 package br.edu.utfpr.pb.pw44s.server.controller;
 
 import br.edu.utfpr.pb.pw44s.server.dto.requestdto.ProductRequestDTO;
+import br.edu.utfpr.pb.pw44s.server.dto.responsedto.ProductResponseDTO;
+import br.edu.utfpr.pb.pw44s.server.model.Category;
 import br.edu.utfpr.pb.pw44s.server.model.Product;
 import br.edu.utfpr.pb.pw44s.server.service.ICrudService;
 import br.edu.utfpr.pb.pw44s.server.service.IProductService;
+import br.edu.utfpr.pb.pw44s.server.service.impl.CategoryServiceImpl;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("products")
-public class ProductController extends CrudController<Product, ProductRequestDTO, Long> {
+public class ProductController extends CrudController<Product, ProductRequestDTO, ProductResponseDTO, Long> {
     private final IProductService productService;
     private final ModelMapper modelMapper;
+    private final CategoryServiceImpl categoryService;
 
-    public ProductController(IProductService productService, ModelMapper modelMapper) {
-        super(Product.class, ProductRequestDTO.class);
+    public ProductController(IProductService productService, ModelMapper modelMapper, CategoryServiceImpl categoryService) {
+        super(Product.class, ProductRequestDTO.class, ProductResponseDTO.class);
         this.productService = productService;
         this.modelMapper = modelMapper;
+        this.categoryService = categoryService;
+    }
+
+    @Override
+    protected Product convertToEntity(ProductRequestDTO entityDto) {
+        Category category = categoryService.findById(entityDto.getCategory());
+        if(category == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
+        }
+        Product product = super.convertToEntity(entityDto);
+        product.setCategory(category);
+
+        return product;
+    }
+
+    @Override
+    protected ProductResponseDTO convertToDto(Product entity) {
+        ProductResponseDTO productDTO = super.convertToDto(entity);
+        if(entity.getCategory() != null) {
+            productDTO.setCategoryId(entity.getCategory().getId());
+            productDTO.setCategoryName(entity.getCategory().getName());
+        }
+        return productDTO;
     }
 
     @Override

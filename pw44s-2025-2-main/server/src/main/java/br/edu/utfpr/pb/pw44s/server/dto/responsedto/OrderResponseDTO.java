@@ -16,5 +16,4 @@ public class OrderResponseDTO {
     private LocalDateTime date;
     private Long userId;
     private String username;
-    private List<OrderItemRequestDTO> items;
 }

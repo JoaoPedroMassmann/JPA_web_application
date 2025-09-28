@@ -6,20 +6,19 @@ import br.edu.utfpr.pb.pw44s.server.model.User;
 import br.edu.utfpr.pb.pw44s.server.repository.UserRepository;
 import br.edu.utfpr.pb.pw44s.server.service.IAddressService;
 import br.edu.utfpr.pb.pw44s.server.service.ICrudService;
-import br.edu.utfpr.pb.pw44s.server.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("addresses")
-public class AddressController extends CrudController<Address, AddressDTO, Long> {
+public class AddressController extends CrudController<Address, AddressDTO, AddressDTO, Long> {
     private final IAddressService addressService;
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
 
     public AddressController(IAddressService addressService, ModelMapper modelMapper, UserRepository userRepository) {
-        super(Address.class, AddressDTO.class);
+        super(Address.class, AddressDTO.class, AddressDTO.class);
         this.addressService = addressService;
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;

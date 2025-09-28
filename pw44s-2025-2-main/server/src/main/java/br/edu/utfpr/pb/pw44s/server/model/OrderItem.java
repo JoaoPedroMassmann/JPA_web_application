@@ -1,5 +1,6 @@
 package br.edu.utfpr.pb.pw44s.server.model;
 
+import br.edu.utfpr.pb.pw44s.server.ids.OrderItemId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,17 +16,18 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @EmbeddedId
+    private OrderItemId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("orderId")
+    private Order order;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("productId")
     private Product product;
 
     private BigDecimal unitPrice;
 
     private Integer quantity;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Order order;
 }

@@ -38,7 +38,7 @@ public class ProductControllerTest {
 
     //methodName_condition_expectedBehaviour
     @Test
-    public void postCategory_whenUserLogged_receiveCreated() {
+    public void postProduct_whenUserLogged_receiveCreated() {
         UserRequestDTO userDTO = new UserRequestDTO();
         userDTO.setUsername("test-user");
         userDTO.setDisplayName("test-Display");
@@ -75,12 +75,13 @@ public class ProductControllerTest {
         BigDecimal price = new BigDecimal("69");
         productDTO.setPrice(price);
         productDTO.setImageUrl("www.test.com");
+        productDTO.setCategory(1L);
         HttpEntity<ProductRequestDTO> productEntity = new HttpEntity<>(productDTO, headers);
 
         ResponseEntity<Object> response =
                 testRestTemplate.postForEntity("/products", productEntity, Object.class);
 
-        assertThat(categoryResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 }
 
