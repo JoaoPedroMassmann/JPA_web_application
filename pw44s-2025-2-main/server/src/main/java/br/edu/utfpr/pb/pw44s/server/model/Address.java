@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "tb_orderitem")
+@Table(name = "tb_addresses")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,19 +20,26 @@ public class Address {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    User user;
 
+    @Column(nullable = false, length = 100)
     private String country;
 
+    @Column(length = 150)
     private String division;
 
+    @Column(length = 50)
     private String postalCode;
 
+    @Column(nullable = false, length = 200)
     private String city;
 
+    @Column(nullable = false, length = 200)
     private String street;
 
-    private double number;
+    @Column(length = 50)
+    private String addressNumber;
 
+    @Column(nullable = false, length = 50)
     private String addressType;
 }

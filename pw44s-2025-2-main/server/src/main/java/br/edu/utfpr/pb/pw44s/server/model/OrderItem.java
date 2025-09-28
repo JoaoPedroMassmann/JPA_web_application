@@ -17,14 +17,14 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class OrderItem {
     @EmbeddedId
-    private OrderItemId id;
+    private OrderItemId id = new OrderItemId();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("orderId")
+    @MapsId("order")
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("productId")
+    @MapsId("product")
     private Product product;
 
     private BigDecimal unitPrice;

@@ -12,6 +12,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class OrderItemId implements Serializable {
-    private Long orderId;
-    private Long productId;
+    private Long order;
+    private Long product;
 }

@@ -1,7 +1,6 @@
-package br.edu.utfpr.pb.pw44s.server.dto;
+package br.edu.utfpr.pb.pw44s.server.dto.responsedto;
 
-import br.edu.utfpr.pb.pw44s.server.model.User;
-import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -11,32 +10,17 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddressDTO{
+public class AddressResponseDTO {
     private Long id;
 
-    @NotNull
     private Long userId;
+    private String username;
 
-    @NotNull
-    @Size(min = 2, max = 200)
     private String country;
-
-    @NotNull
-    @Size(min = 2, max = 200)
     private String division;
-
-    @NotNull
     private String postalCode;
-
-    @NotNull
     private String city;
-
-    @NotNull
     private String street;
-
-    @NotNull
-    private double number;
-
-    @NotNull
+    private String addressNumber;
     private String addressType;
 }

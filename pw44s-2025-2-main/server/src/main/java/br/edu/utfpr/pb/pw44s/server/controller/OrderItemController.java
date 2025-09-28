@@ -2,6 +2,7 @@ package br.edu.utfpr.pb.pw44s.server.controller;
 
 import br.edu.utfpr.pb.pw44s.server.dto.requestdto.OrderItemRequestDTO;
 import br.edu.utfpr.pb.pw44s.server.dto.responsedto.OrderItemResponseDTO;
+import br.edu.utfpr.pb.pw44s.server.dto.updatedto.OrderItemUpdateDTO;
 import br.edu.utfpr.pb.pw44s.server.model.Category;
 import br.edu.utfpr.pb.pw44s.server.model.Order;
 import br.edu.utfpr.pb.pw44s.server.model.OrderItem;
@@ -10,10 +11,11 @@ import br.edu.utfpr.pb.pw44s.server.service.ICrudService;
 import br.edu.utfpr.pb.pw44s.server.service.IOrderItemService;
 import br.edu.utfpr.pb.pw44s.server.service.impl.OrderServiceImpl;
 import br.edu.utfpr.pb.pw44s.server.service.impl.ProductServiceImpl;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
@@ -63,6 +65,8 @@ public class OrderItemController extends CrudController<OrderItem, OrderItemRequ
         }
         return orderItemDTO;
     }
+
+
 
     @Override
     protected ICrudService<OrderItem, Long> getService() {
