@@ -68,6 +68,9 @@ public class WebSecurity {
 
                 .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
 
+                .requestMatchers(HttpMethod.PUT, "/orders/**").denyAll()
+                //A lógica de update de um pedido é incompatível com a utilizada, já que todos os itens não devem ser alterados (user do pedido, horário do pedido, etc.)
+
                 //as demais rotas da aplicação só podem ser acessadas se o usuário estiver autenticado
                 .anyRequest().authenticated()
         );

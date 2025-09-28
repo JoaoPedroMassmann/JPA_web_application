@@ -2,6 +2,7 @@ package br.edu.utfpr.pb.pw44s.server.controller;
 
 import br.edu.utfpr.pb.pw44s.server.dto.requestdto.AddressRequestDTO;
 import br.edu.utfpr.pb.pw44s.server.dto.responsedto.AddressResponseDTO;
+import br.edu.utfpr.pb.pw44s.server.dto.updatedto.AddressUpdateDTO;
 import br.edu.utfpr.pb.pw44s.server.model.Address;
 import br.edu.utfpr.pb.pw44s.server.model.User;
 import br.edu.utfpr.pb.pw44s.server.repository.UserRepository;
@@ -13,13 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("addresses")
-public class AddressController extends CrudController<Address, AddressRequestDTO, AddressResponseDTO, Long> {
+public class AddressController extends CrudController<Address, AddressRequestDTO, AddressResponseDTO, AddressUpdateDTO, Long> {
     private final IAddressService addressService;
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
 
     public AddressController(IAddressService addressService, ModelMapper modelMapper, UserRepository userRepository) {
-        super(Address.class, AddressRequestDTO.class, AddressResponseDTO.class);
+        super(Address.class, AddressRequestDTO.class, AddressResponseDTO.class, AddressUpdateDTO.class);
         this.addressService = addressService;
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;

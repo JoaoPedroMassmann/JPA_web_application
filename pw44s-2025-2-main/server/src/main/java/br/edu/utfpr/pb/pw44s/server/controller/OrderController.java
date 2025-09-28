@@ -22,13 +22,13 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("orders")
-public class OrderController extends CrudController<Order, OrderRequestDTO, OrderResponseDTO, Long> {
+public class OrderController extends CrudController<Order, OrderRequestDTO, OrderResponseDTO, OrderRequestDTO, Long> {
     private final IOrderService orderService;
     private final ModelMapper modelMapper;
     private final UserService userService;
 
     public OrderController(IOrderService orderService, ModelMapper modelMapper, UserService userService) {
-        super(Order.class, OrderRequestDTO.class, OrderResponseDTO.class);
+        super(Order.class, OrderRequestDTO.class, OrderResponseDTO.class, OrderRequestDTO.class);
         this.orderService = orderService;
         this.modelMapper = modelMapper;
         this.userService = userService;

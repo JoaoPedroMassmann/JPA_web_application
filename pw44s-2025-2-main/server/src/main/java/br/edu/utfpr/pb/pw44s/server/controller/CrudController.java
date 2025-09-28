@@ -2,6 +2,7 @@ package br.edu.utfpr.pb.pw44s.server.controller;
 
 import br.edu.utfpr.pb.pw44s.server.service.ICrudService;
 import jakarta.validation.Valid;
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,13 +10,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
 // T = class type, D = dto type, ID = attribute related to primary key type  
-public abstract class CrudController<T, ReqDTO, ResDTO, ID extends Serializable> {
+public abstract class CrudController<T, ReqDTO, ResDTO, UpdDTO, ID extends Serializable> {
 
     protected abstract ICrudService<T, ID> getService();
     protected abstract ModelMapper getModelMapper();
@@ -23,12 +25,13 @@ public abstract class CrudController<T, ReqDTO, ResDTO, ID extends Serializable>
     private final Class<T> typeClass;
     private final Class<ReqDTO> reqDtoClass;
     private final Class<ResDTO> resDtoClass;
+    private final Class<UpdDTO> updDtoClass;
 
-
-    public CrudController(Class<T> typeClass, Class<ReqDTO> reqDtoClass, Class<ResDTO> resDtoClass) {
+    public CrudController(Class<T> typeClass, Class<ReqDTO> reqDtoClass, Class<ResDTO> resDtoClass, Class<UpdDTO> updDtoClass) {
         this.typeClass = typeClass;
         this.reqDtoClass = reqDtoClass;
         this.resDtoClass = resDtoClass;
+        this.updDtoClass = updDtoClass;
     }
 
     protected ResDTO convertToDto(T entity) {
@@ -76,9 +79,24 @@ public abstract class CrudController<T, ReqDTO, ResDTO, ID extends Serializable>
 
     }
 
+    protected T convertToUpdatedEntity(T existingEntity, UpdDTO updateDto) {
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+
+        mapper.map(updateDto, existingEntity);
+        return existingEntity;
+    }
+
     @PutMapping("{id}")
-    public ResponseEntity<ResDTO> update(@PathVariable ID id, @RequestBody @Valid ReqDTO entity) {
-        return ResponseEntity.status(HttpStatus.OK).body(convertToDto(getService().save(convertToEntity(entity))));
+    public ResponseEntity<ResDTO> update(@PathVariable ID id, @RequestBody @Valid UpdDTO entity) {
+        T existingEntity = getService().findById(id);
+
+        if (existingEntity == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Object not found");
+        }
+
+        T updatedEntity = convertToUpdatedEntity(existingEntity, entity);
+        return ResponseEntity.status(HttpStatus.OK).body(convertToDto(getService().save(updatedEntity)));
     }
 
     @GetMapping("exists/{id}")

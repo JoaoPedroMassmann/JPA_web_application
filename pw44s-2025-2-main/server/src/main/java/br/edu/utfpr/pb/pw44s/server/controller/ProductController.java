@@ -1,12 +1,14 @@
 package br.edu.utfpr.pb.pw44s.server.controller;
 
 import br.edu.utfpr.pb.pw44s.server.dto.requestdto.ProductRequestDTO;
+import br.edu.utfpr.pb.pw44s.server.dto.requestdto.ProductUpdateDTO;
 import br.edu.utfpr.pb.pw44s.server.dto.responsedto.ProductResponseDTO;
 import br.edu.utfpr.pb.pw44s.server.model.Category;
 import br.edu.utfpr.pb.pw44s.server.model.Product;
 import br.edu.utfpr.pb.pw44s.server.service.ICrudService;
 import br.edu.utfpr.pb.pw44s.server.service.IProductService;
 import br.edu.utfpr.pb.pw44s.server.service.impl.CategoryServiceImpl;
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,13 +17,13 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("products")
-public class ProductController extends CrudController<Product, ProductRequestDTO, ProductResponseDTO, Long> {
+public class ProductController extends CrudController<Product, ProductRequestDTO, ProductResponseDTO, ProductUpdateDTO, Long> {
     private final IProductService productService;
     private final ModelMapper modelMapper;
     private final CategoryServiceImpl categoryService;
 
     public ProductController(IProductService productService, ModelMapper modelMapper, CategoryServiceImpl categoryService) {
-        super(Product.class, ProductRequestDTO.class, ProductResponseDTO.class);
+        super(Product.class, ProductRequestDTO.class, ProductResponseDTO.class, ProductUpdateDTO.class);
         this.productService = productService;
         this.modelMapper = modelMapper;
         this.categoryService = categoryService;
@@ -47,6 +49,24 @@ public class ProductController extends CrudController<Product, ProductRequestDTO
             productDTO.setCategoryName(entity.getCategory().getName());
         }
         return productDTO;
+    }
+
+    @Override
+    protected Product convertToUpdatedEntity(Product existingEntity, ProductUpdateDTO updateDto) {
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+
+        if (updateDto.getCategory() != null) {
+            Category category = categoryService.findById(updateDto.getCategory());
+
+            if(category == null){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
+            }
+            existingEntity.setCategory(category);
+        }
+
+        mapper.map(updateDto, existingEntity);
+        return existingEntity;
     }
 
     @Override

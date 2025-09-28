@@ -1,6 +1,9 @@
 package br.edu.utfpr.pb.pw44s.server;
 
 import br.edu.utfpr.pb.pw44s.server.dto.requestdto.UserRequestDTO;
+import br.edu.utfpr.pb.pw44s.server.repository.AddressRepository;
+import br.edu.utfpr.pb.pw44s.server.repository.OrderItemRepository;
+import br.edu.utfpr.pb.pw44s.server.repository.OrderRepository;
 import br.edu.utfpr.pb.pw44s.server.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,9 +29,28 @@ public class LoginTests {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    OrderRepository orderRepository;
+
+    @Autowired
+    OrderItemRepository orderItemRepository;
+
+    @Autowired
+    AddressRepository addressRepository;
+
     @BeforeEach
     public void cleanup() {
+        orderItemRepository.deleteAll();
+        orderItemRepository.flush();
+
+        orderRepository.deleteAll();
+        orderRepository.flush();
+
+        addressRepository.deleteAll();
+        addressRepository.flush();
+
         userRepository.deleteAll();
+        userRepository.flush();
     }
 
     //methodName_condition_expectedBehaviour

@@ -3,7 +3,8 @@ package br.edu.utfpr.pb.pw44s.server;
 import br.edu.utfpr.pb.pw44s.server.dto.requestdto.CategoryRequestDTO;
 import br.edu.utfpr.pb.pw44s.server.dto.LoginResponseDTO;
 import br.edu.utfpr.pb.pw44s.server.dto.requestdto.UserRequestDTO;
-import br.edu.utfpr.pb.pw44s.server.repository.UserRepository;
+import br.edu.utfpr.pb.pw44s.server.repository.*;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,42 @@ public class CategoryControllerTest {
     TestRestTemplate testRestTemplate;
 
     @Autowired
+    CategoryRepository categoryRepository;
+
+    @Autowired
+    ProductRepository productRepository;
+
+    @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    OrderRepository orderRepository;
+
+    @Autowired
+    OrderItemRepository orderItemRepository;
+
+    @Autowired
+    AddressRepository addressRepository;
 
     @BeforeEach
     public void cleanup() {
+        orderItemRepository.deleteAll();
+        orderItemRepository.flush();
+
+        orderRepository.deleteAll();
+        orderRepository.flush();
+
+        addressRepository.deleteAll();
+        addressRepository.flush();
+
         userRepository.deleteAll();
+        userRepository.flush();
+
+        productRepository.deleteAll();
+        productRepository.flush();
+
+        categoryRepository.deleteAll();
+        categoryRepository.flush();
     }
 
     //methodName_condition_expectedBehaviour

@@ -1,17 +1,17 @@
--- =========================
--- USERS
--- =========================
-INSERT INTO tb_user (username, email, display_name, password) VALUES ('Joao Pedro', 'joao@email.com', 'Joao Pedro', 'P4ssword');
+-- Users
 
-INSERT INTO tb_user (username, email, display_name, password) VALUES ('Mariana', 'mariana@email.com', 'Mariana', 'P4ssword');
+INSERT INTO tb_user (username, email, display_name, password) VALUES ('Joao Pedro', 'joao@email.com', 'Joao Pedro', '$2a$10$ECH0.py.MHfrpjCt0Yhx3u1Y7Rc10C8shMp59pDNz5zDdr8mrqUr.');
 
-INSERT INTO tb_user (username, email, display_name, password) VALUES ('Vinicius', 'vinicius.silva@email.com', 'Vinicius', 'P4ssword');
+INSERT INTO tb_user (username, email, display_name, password) VALUES ('Mariana', 'mariana@email.com', 'Mariana', '$2a$10$ECH0.py.MHfrpjCt0Yhx3u1Y7Rc10C8shMp59pDNz5zDdr8mrqUr.');
 
-INSERT INTO tb_user (username, email, display_name, password) VALUES ('Gustavo', 'gustavo.mueller@email.de', 'Gustavo', 'P4ssword');
+INSERT INTO tb_user (username, email, display_name, password) VALUES ('Vinicius', 'vinicius.silva@email.com', 'Vinicius', '$2a$10$ECH0.py.MHfrpjCt0Yhx3u1Y7Rc10C8shMp59pDNz5zDdr8mrqUr.');
 
-INSERT INTO tb_user (username, email, display_name, password) VALUES ('Giseli', 'giseli.wei@email.cn', 'Giseli', 'P4ssword');
+INSERT INTO tb_user (username, email, display_name, password) VALUES ('Gustavo', 'gustavo.mueller@email.de', 'Gustavo', '$2a$10$ECH0.py.MHfrpjCt0Yhx3u1Y7Rc10C8shMp59pDNz5zDdr8mrqUr.');
+
+INSERT INTO tb_user (username, email, display_name, password) VALUES ('Giseli', 'giseli.wei@email.cn', 'Giseli', '$2a$10$ECH0.py.MHfrpjCt0Yhx3u1Y7Rc10C8shMp59pDNz5zDdr8mrqUr.');
 
 -- Addresses
+
 INSERT INTO tb_addresses (user_id, country, division, postal_code, city, street, address_number, address_type) VALUES (1, 'United States', 'California', '94016', 'San Francisco', 'Market Street', '500', 'Residential');
 
 INSERT INTO tb_addresses (user_id, country, division, postal_code, city, street, address_number, address_type) VALUES (2, 'Germany', 'Bavaria', '80331', 'Munich', 'Marienplatz', '1', 'Residential');

@@ -4,7 +4,7 @@ import br.edu.utfpr.pb.pw44s.server.dto.requestdto.CategoryRequestDTO;
 import br.edu.utfpr.pb.pw44s.server.dto.LoginResponseDTO;
 import br.edu.utfpr.pb.pw44s.server.dto.requestdto.ProductRequestDTO;
 import br.edu.utfpr.pb.pw44s.server.dto.requestdto.UserRequestDTO;
-import br.edu.utfpr.pb.pw44s.server.repository.UserRepository;
+import br.edu.utfpr.pb.pw44s.server.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,11 +30,42 @@ public class ProductControllerTest {
     TestRestTemplate testRestTemplate;
 
     @Autowired
+    CategoryRepository categoryRepository;
+
+    @Autowired
+    ProductRepository productRepository;
+
+    @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    OrderRepository orderRepository;
+
+    @Autowired
+    OrderItemRepository orderItemRepository;
+
+    @Autowired
+    AddressRepository addressRepository;
 
     @BeforeEach
     public void cleanup() {
+        orderItemRepository.deleteAll();
+        orderItemRepository.flush();
+
+        orderRepository.deleteAll();
+        orderRepository.flush();
+
+        addressRepository.deleteAll();
+        addressRepository.flush();
+
         userRepository.deleteAll();
+        userRepository.flush();
+
+        productRepository.deleteAll();
+        productRepository.flush();
+
+        categoryRepository.deleteAll();
+        categoryRepository.flush();
     }
 
     //methodName_condition_expectedBehaviour
@@ -72,10 +104,13 @@ public class ProductControllerTest {
         ProductRequestDTO productDTO = new ProductRequestDTO();
         productDTO.setName("test-product");
         productDTO.setDescription("Test Product");
-        BigDecimal price = new BigDecimal("69");
+        BigDecimal price = new BigDecimal("60");
         productDTO.setPrice(price);
         productDTO.setImageUrl("www.test.com");
-        productDTO.setCategory(1L);
+        Map<String, Object> body = (Map<String, Object>) categoryResponse.getBody();
+        Number categoryIdNumber = (Number) body.get("id"); // works for Integer, Long, BigInteger
+        Long categoryId = categoryIdNumber.longValue();
+        productDTO.setCategory(categoryId);
         HttpEntity<ProductRequestDTO> productEntity = new HttpEntity<>(productDTO, headers);
 
         ResponseEntity<Object> response =

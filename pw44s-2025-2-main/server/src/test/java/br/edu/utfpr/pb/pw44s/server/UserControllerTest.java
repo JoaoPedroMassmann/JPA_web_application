@@ -2,6 +2,9 @@ package br.edu.utfpr.pb.pw44s.server;
 
 import br.edu.utfpr.pb.pw44s.server.dto.requestdto.UserRequestDTO;
 import br.edu.utfpr.pb.pw44s.server.model.User;
+import br.edu.utfpr.pb.pw44s.server.repository.AddressRepository;
+import br.edu.utfpr.pb.pw44s.server.repository.OrderItemRepository;
+import br.edu.utfpr.pb.pw44s.server.repository.OrderRepository;
 import br.edu.utfpr.pb.pw44s.server.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,9 +30,28 @@ public class UserControllerTest {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    OrderRepository orderRepository;
+
+    @Autowired
+    OrderItemRepository orderItemRepository;
+
+    @Autowired
+    AddressRepository addressRepository;
+
     @BeforeEach
     public void cleanup() {
+        orderItemRepository.deleteAll();
+        orderItemRepository.flush();
+
+        orderRepository.deleteAll();
+        orderRepository.flush();
+
+        addressRepository.deleteAll();
+        addressRepository.flush();
+
         userRepository.deleteAll();
+        userRepository.flush();
     }
 
     //methodName_condition_expectedBehaviour
@@ -48,7 +70,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void putUser_whenUserIsValid_userSavedToDatabase() {
+    public void postUser_whenUserIsValid_userSavedToDatabase() {
         UserRequestDTO userDTO = new UserRequestDTO();
         userDTO.setUsername("test-user");
         userDTO.setDisplayName("test-Display");
@@ -62,7 +84,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void putUser_whenUserIsValid_passwordIsHashedInDatabase() {
+    public void postUser_whenUserIsValid_passwordIsHashedInDatabase() {
         UserRequestDTO userDTO = new UserRequestDTO();
         userDTO.setUsername("test-user");
         userDTO.setDisplayName("test-Display");
@@ -78,7 +100,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void putUser_whenUserHasNullUsername_receiveBadRequest() {
+    public void postUser_whenUserHasNullUsername_receiveBadRequest() {
         UserRequestDTO userDTO = new UserRequestDTO();
         userDTO.setUsername( null );
         userDTO.setDisplayName("test-Display");
@@ -92,7 +114,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void putUser_whenUserHasUsernameWithLessThanRequired_receiveBadRequest() {
+    public void postUser_whenUserHasUsernameWithLessThanRequired_receiveBadRequest() {
         UserRequestDTO userDTO = new UserRequestDTO();
         userDTO.setUsername( "abc" );
         userDTO.setDisplayName("test-Display");
@@ -106,7 +128,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void putUser_whenUserHasUsernameWithWrongEmail_receiveBadRequest() {
+    public void postUser_whenUserHasUsernameWithWrongEmail_receiveBadRequest() {
         UserRequestDTO userDTO = new UserRequestDTO();
         userDTO.setUsername( "test-user" );
         userDTO.setDisplayName("test-Display");

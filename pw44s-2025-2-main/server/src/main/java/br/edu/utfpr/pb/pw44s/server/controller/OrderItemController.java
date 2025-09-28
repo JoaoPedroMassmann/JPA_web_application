@@ -20,14 +20,14 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("order_items")
-public class OrderItemController extends CrudController<OrderItem, OrderItemRequestDTO, OrderItemResponseDTO, Long> {
+public class OrderItemController extends CrudController<OrderItem, OrderItemRequestDTO, OrderItemResponseDTO, OrderItemUpdateDTO, Long> {
     private final IOrderItemService orderItemService;
     private final ModelMapper modelMapper;
     private final OrderServiceImpl orderService;
     private final ProductServiceImpl productService;
 
     public OrderItemController(IOrderItemService orderItemService, ModelMapper modelMapper, OrderServiceImpl orderService, ProductServiceImpl productService) {
-        super(OrderItem.class, OrderItemRequestDTO.class, OrderItemResponseDTO.class);
+        super(OrderItem.class, OrderItemRequestDTO.class, OrderItemResponseDTO.class, OrderItemUpdateDTO.class);
         this.orderItemService = orderItemService;
         this.modelMapper = modelMapper;
         this.orderService = orderService;
@@ -65,8 +65,6 @@ public class OrderItemController extends CrudController<OrderItem, OrderItemRequ
         }
         return orderItemDTO;
     }
-
-
 
     @Override
     protected ICrudService<OrderItem, Long> getService() {
