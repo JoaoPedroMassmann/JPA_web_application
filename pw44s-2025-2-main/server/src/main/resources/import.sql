@@ -12,9 +12,9 @@ INSERT INTO tb_user (username, email, display_name, password) VALUES ('Giseli', 
 
 -- Addresses
 
-INSERT INTO tb_addresses (user_id, country, division, postal_code, city, street, address_number, address_type) VALUES (1, 'United States', 'California', '94016', 'San Francisco', 'Market Street', '500', 'Residential');
+INSERT INTO tb_address (user_id, country, division, postal_code, city, street, address_number, address_type) VALUES (1, 'United States', 'California', '94016', 'San Francisco', 'Market Street', '500', 'Residential');
 
-INSERT INTO tb_addresses (user_id, country, division, postal_code, city, street, address_number, address_type) VALUES (2, 'Germany', 'Bavaria', '80331', 'Munich', 'Marienplatz', '1', 'Residential');
+INSERT INTO tb_address (user_id, country, division, postal_code, city, street, address_number, address_type) VALUES (2, 'Germany', 'Bavaria', '80331', 'Munich', 'Marienplatz', '1', 'Residential');
 
 -- Categories
 
