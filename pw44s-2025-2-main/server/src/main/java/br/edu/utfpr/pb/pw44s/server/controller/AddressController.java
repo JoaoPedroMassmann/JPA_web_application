@@ -4,6 +4,7 @@ import br.edu.utfpr.pb.pw44s.server.dto.requestdto.AddressRequestDTO;
 import br.edu.utfpr.pb.pw44s.server.dto.responsedto.AddressResponseDTO;
 import br.edu.utfpr.pb.pw44s.server.dto.updatedto.AddressUpdateDTO;
 import br.edu.utfpr.pb.pw44s.server.model.Address;
+import br.edu.utfpr.pb.pw44s.server.model.OrderItem;
 import br.edu.utfpr.pb.pw44s.server.model.User;
 import br.edu.utfpr.pb.pw44s.server.repository.UserRepository;
 import br.edu.utfpr.pb.pw44s.server.service.IAddressService;
@@ -37,11 +38,11 @@ public class AddressController extends CrudController<Address, AddressRequestDTO
     }
 
     @Override
-    protected Address convertToEntity(AddressRequestDTO dto) {
-        Address address = getModelMapper().map(dto, Address.class);
+    protected Address convertToEntity(AddressRequestDTO entityDto){
+        Address address = super.convertToEntity(entityDto);
 
-        User user = userRepository.findById(dto.getUser())
-                .orElseThrow(() -> new RuntimeException("User not found with id " + dto.getUser()));
+        User user = userRepository.findById(entityDto.getUser())
+                .orElseThrow(() -> new RuntimeException("User not found with id " + entityDto.getUser()));
 
         address.setUser(user);
         return address;

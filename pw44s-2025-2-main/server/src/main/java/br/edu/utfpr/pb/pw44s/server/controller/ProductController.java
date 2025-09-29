@@ -1,5 +1,6 @@
 package br.edu.utfpr.pb.pw44s.server.controller;
 
+import br.edu.utfpr.pb.pw44s.server.dto.requestdto.CategoryRequestDTO;
 import br.edu.utfpr.pb.pw44s.server.dto.requestdto.ProductRequestDTO;
 import br.edu.utfpr.pb.pw44s.server.dto.requestdto.ProductUpdateDTO;
 import br.edu.utfpr.pb.pw44s.server.dto.responsedto.ProductResponseDTO;
@@ -31,6 +32,10 @@ public class ProductController extends CrudController<Product, ProductRequestDTO
 
     @Override
     protected Product convertToEntity(ProductRequestDTO entityDto) {
+        if(productService.existsByName(entityDto.getName().trim())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product with name \"" + entityDto.getName() + "\" already exists");
+        }
+
         Category category = categoryService.findById(entityDto.getCategory());
         if(category == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");

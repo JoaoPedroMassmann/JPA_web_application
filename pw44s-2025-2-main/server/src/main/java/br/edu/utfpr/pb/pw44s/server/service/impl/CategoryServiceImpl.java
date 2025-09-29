@@ -1,10 +1,13 @@
 package br.edu.utfpr.pb.pw44s.server.service.impl;
 
 import br.edu.utfpr.pb.pw44s.server.model.Category;
+import br.edu.utfpr.pb.pw44s.server.model.Product;
 import br.edu.utfpr.pb.pw44s.server.repository.CategoryRepository;
 import br.edu.utfpr.pb.pw44s.server.service.ICategoryService;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -21,6 +24,11 @@ public class CategoryServiceImpl extends CrudServiceImpl<Category, Long>
     protected JpaRepository<Category, Long> getRepository() {
         return categoryRepository;
     }
+
+    @Override
+    public boolean existsByName(String name){
+        return categoryRepository.existsByName(name);
+    };
 }
 /*public class CategoryServiceImpl implements ICategoryService {
 

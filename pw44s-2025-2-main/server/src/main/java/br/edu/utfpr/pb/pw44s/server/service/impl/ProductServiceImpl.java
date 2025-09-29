@@ -22,9 +22,13 @@ public class ProductServiceImpl extends CrudServiceImpl<Product, Long>  implemen
         return productRepository;
     }
 
-
     @Override
     public List<Product> findAllByCategoryId(Long categoryId) {
         return this.productRepository.findAllByCategoryId(categoryId);
     }
+
+    @Override
+    public boolean existsByName(String name){
+        return productRepository.existsByName(name);
+    };
 }
