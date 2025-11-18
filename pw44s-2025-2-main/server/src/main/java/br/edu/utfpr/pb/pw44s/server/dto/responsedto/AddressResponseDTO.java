@@ -13,8 +13,7 @@ import lombok.NoArgsConstructor;
 public class AddressResponseDTO {
     private Long id;
 
-    private Long userId;
-    private String username;
+    private UserResponseDTO user;
 
     private String country;
     private String division;

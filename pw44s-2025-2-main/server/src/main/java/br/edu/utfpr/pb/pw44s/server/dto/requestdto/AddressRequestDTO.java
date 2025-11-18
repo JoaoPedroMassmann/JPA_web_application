@@ -11,9 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddressRequestDTO {
-    @NotNull
-    private Long user;
-
     @NotBlank
     @Size(min = 2, max = 100)
     private String country;

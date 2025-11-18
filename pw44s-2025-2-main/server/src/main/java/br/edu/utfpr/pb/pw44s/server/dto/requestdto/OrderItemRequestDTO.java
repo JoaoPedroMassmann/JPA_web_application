@@ -16,14 +16,7 @@ import java.math.BigDecimal;
 @Data
 public class OrderItemRequestDTO {
     @NotNull
-    private Long order;
-
-    @NotNull
     private Long product;
-
-    @NotNull
-    @DecimalMin(value = "0.01")
-    private BigDecimal unitPrice;
 
     @NotNull
     @Min(value = 1)

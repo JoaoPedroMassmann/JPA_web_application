@@ -30,16 +30,14 @@ INSERT INTO tb_product (name, description, price, image_url, category_id) VALUES
 
 -- Orders
 
-INSERT INTO tb_order (user_id, date) VALUES (1, '2025-09-28T10:00:00');
+INSERT INTO tb_order (date, payment_method, delivery_method, user_id, address_id) VALUES ('2025-09-28T10:00:00', 'credit','Correios', 1, 1);
 
-INSERT INTO tb_order (user_id, date) VALUES (1, '2025-09-28T10:00:00');
-
-INSERT INTO tb_order (user_id, date) VALUES (2, '2025-09-28T10:00:00');
+INSERT INTO tb_order (date, payment_method, delivery_method, user_id, address_id) VALUES ('2025-09-28T10:00:00', 'credit','Correios', 2, 2);
 
 -- Order items
 
-INSERT INTO tb_orderitem (order_id, product_id, unit_price, quantity) VALUES (1, 1, 150.00, 2);
+INSERT INTO tb_orderitem (order_id, product_id, unit_price, quantity) VALUES(1, 1, 20.00, 2);
 
-INSERT INTO tb_orderitem (order_id, product_id, unit_price, quantity) VALUES (1, 2, 150.00, 3);
+INSERT INTO tb_orderitem (order_id, product_id, unit_price, quantity) VALUES(1, 2, 30.00, 10);
 
-INSERT INTO tb_orderitem (order_id, product_id, unit_price, quantity) VALUES (2, 2, 150.00, 1);
+INSERT INTO tb_orderitem (order_id, product_id, unit_price, quantity) VALUES(2, 1, 15.00, 1);
