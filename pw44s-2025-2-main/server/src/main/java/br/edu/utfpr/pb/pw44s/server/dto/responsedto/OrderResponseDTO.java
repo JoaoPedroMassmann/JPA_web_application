@@ -1,10 +1,5 @@
 package br.edu.utfpr.pb.pw44s.server.dto.responsedto;
 
-import br.edu.utfpr.pb.pw44s.server.dto.requestdto.EnderecoDTO;
-import br.edu.utfpr.pb.pw44s.server.dto.requestdto.ItemPedidoDTO;
-import br.edu.utfpr.pb.pw44s.server.dto.requestdto.OrderItemRequestDTO;
-import br.edu.utfpr.pb.pw44s.server.dto.requestdto.UserRequestDTO;
-import br.edu.utfpr.pb.pw44s.server.model.OrderItem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

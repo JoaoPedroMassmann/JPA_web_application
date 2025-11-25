@@ -12,9 +12,14 @@ import br.edu.utfpr.pb.pw44s.server.service.impl.CategoryServiceImpl;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("products")
@@ -73,6 +78,25 @@ public class ProductController extends CrudController<Product, ProductRequestDTO
         mapper.map(updateDto, existingEntity);
         return existingEntity;
     }
+
+    @GetMapping("/category/{id}")
+    public ResponseEntity<?> findAllByCategoryId(@PathVariable Long id) {
+        try {
+            List<Product> products = productService.findAllByCategoryId(id);
+
+            List<ProductResponseDTO> dtoList = products.stream()
+                    .map(this::convertToDto)
+                    .toList();
+
+            return ResponseEntity.ok(dtoList);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Erro ao buscar produtos por categoria");
+        }
+    }
+
+
 
     @Override
     protected ICrudService<Product, Long> getService() {

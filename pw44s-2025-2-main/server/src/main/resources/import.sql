@@ -18,15 +18,42 @@ INSERT INTO tb_address (user_id, country, division, postal_code, city, street, a
 
 -- Categories
 
-INSERT INTO tb_category (name) VALUES ('Chairs');
+INSERT INTO tb_category (name) VALUES ('Sofas');
 
-INSERT INTO tb_category (name) VALUES ('Tables');
+INSERT INTO tb_category (name) VALUES ('Chairs');
 
 -- Products
 
-INSERT INTO tb_product (name, description, price, image_url, category_id) VALUES ('Office Chair', 'Cool Office Chair', 150.00,'1.png', 1);
+-- Sofas
 
-INSERT INTO tb_product (name, description, price, image_url, category_id) VALUES ('Dining Table', 'Really Cool Table', 200.00,'2.png', 2);
+
+INSERT INTO tb_product (name, description, price, image_url, category_id) VALUES ('Caxias Sofa', 'A nature-inspired sofa made with all-natural materials, combining comfort and sustainability.',1799.00,'/assets/images/sofa1.png',1);
+
+INSERT INTO tb_product (name, description, price, image_url, category_id) VALUES ('Fortaleza Sectional', 'A modular sectional that brings flexibility and comfort to your living space.', 1799.00, '/assets/images/sofa1.png', 1);
+
+INSERT INTO tb_product (name, description, price, image_url, category_id) VALUES ('Erechim Sofa', 'Luxurious comfort meets sophisticated design with this velvet-upholstered piece.', 1799, '/assets/images/sofa1.png', 1);
+
+INSERT INTO tb_product (name, description, price, image_url, category_id) VALUES ('One Sofa', 'Luxurious comfort meets sophisticated design with this velvet-upholstered piece.', 1799, '/assets/images/sofa1.png', 1);
+
+INSERT INTO tb_product (name, description, price, image_url, category_id) VALUES ('Two Sofa', 'Luxurious comfort meets sophisticated design with this velvet-upholstered piece.', 1799, '/assets/images/sofa1.png', 1);
+
+INSERT INTO tb_product (name, description, price, image_url, category_id) VALUES ('Three Sofa', 'Luxurious comfort meets sophisticated design with this velvet-upholstered piece.', 1799, '/assets/images/sofa1.png', 1);
+
+
+-- Chairs
+
+INSERT INTO tb_product (name, description, price, image_url, category_id) VALUES ( 'Araucaria Chair','Comfortable and stylish, made with sustainable rattan.',1799,'/assets/images/chair1.png',2);
+
+INSERT INTO tb_product (name, description, price, image_url, category_id) VALUES ('Ipê Chair','Crafted from reclaimed wood and breathable fabric for natural beauty and comfort.',1799,'/assets/images/chair1.png' ,2);
+
+INSERT INTO tb_product (name, description, price, image_url, category_id) VALUES ('Carnaúba Chair','An ergonomic and eco-friendly seating solution with a clean design.',1799,'/assets/images/chair1.png',2);
+
+INSERT INTO tb_product (name, description, price, image_url, category_id) VALUES ('One Chair','An ergonomic and eco-friendly seating solution with a clean design.',1799,'/assets/images/chair1.png',2);
+
+INSERT INTO tb_product (name, description, price, image_url, category_id) VALUES ('Two Chair','An ergonomic and eco-friendly seating solution with a clean design.',1799,'/assets/images/chair1.png',2);
+
+INSERT INTO tb_product (name, description, price, image_url, category_id) VALUES ('Three Chair','An ergonomic and eco-friendly seating solution with a clean design.',1799,'/assets/images/chair1.png',2);
+
 
 -- Orders
 

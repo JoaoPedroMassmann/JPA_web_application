@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @Data
 public class OrderItemRequestDTO {
     @NotNull
-    private Long product;
+    private Long productId;
 
     @NotNull
     @Min(value = 1)

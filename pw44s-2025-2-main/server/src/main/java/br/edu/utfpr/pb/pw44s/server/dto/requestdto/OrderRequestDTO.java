@@ -23,17 +23,10 @@ public class OrderRequestDTO {
     @NotBlank
     private String deliveryMethod;
 
-    // Buscar o usuário autenticado no SecurityContextHolder
-    // Veio lá do AuthService getAuthenticatedUser()
-    // private User user;
-
-    // A data do pedido vai ficar no model apenas
-    //private LocalDateTime datapedido
-
     @NotNull
     private Long addressId;
 
     @NotNull
-    @Size(min = 1, message = "O pedido deve ter pelo menos 1 item.")
+    @Size(min = 1, message = "The order must have at least 1 item.")
     private List<OrderItemRequestDTO> orderItems;
 }

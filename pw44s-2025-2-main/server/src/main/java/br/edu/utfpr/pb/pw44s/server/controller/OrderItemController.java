@@ -38,7 +38,7 @@ public class OrderItemController extends CrudController<OrderItem, OrderItemRequ
     protected OrderItem convertToEntity(OrderItemRequestDTO entityDto) {
         OrderItem orderItem = super.convertToEntity(entityDto);
 
-        Product product = (productService.findById(entityDto.getProduct()));
+        Product product = (productService.findById(entityDto.getProductId()));
         if (product == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         }

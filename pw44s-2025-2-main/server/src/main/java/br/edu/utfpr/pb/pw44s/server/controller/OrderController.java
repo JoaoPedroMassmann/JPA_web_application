@@ -1,9 +1,7 @@
 package br.edu.utfpr.pb.pw44s.server.controller;
 
 import br.edu.utfpr.pb.pw44s.server.dto.requestdto.OrderRequestDTO;
-import br.edu.utfpr.pb.pw44s.server.dto.requestdto.ProductRequestDTO;
 import br.edu.utfpr.pb.pw44s.server.dto.responsedto.OrderResponseDTO;
-import br.edu.utfpr.pb.pw44s.server.dto.responsedto.ProductResponseDTO;
 import br.edu.utfpr.pb.pw44s.server.model.*;
 import br.edu.utfpr.pb.pw44s.server.repository.AddressRepository;
 import br.edu.utfpr.pb.pw44s.server.repository.OrderItemRepository;
@@ -12,14 +10,12 @@ import br.edu.utfpr.pb.pw44s.server.service.ICrudService;
 import br.edu.utfpr.pb.pw44s.server.service.IOrderService;
 import br.edu.utfpr.pb.pw44s.server.service.UserService;
 import br.edu.utfpr.pb.pw44s.server.service.impl.AddressServiceImpl;
-import br.edu.utfpr.pb.pw44s.server.service.impl.OrderItemServiceImpl;
+import br.edu.utfpr.pb.pw44s.server.service.impl.ProductServiceImpl;
 import jakarta.validation.Valid;
-import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -35,8 +31,9 @@ public class OrderController extends CrudController<Order, OrderRequestDTO, Orde
     private final AuthService authService;
     private final OrderItemController orderItemController;
     private final AddressRepository addressRepository;
+    private final ProductServiceImpl productServiceImpl;
 
-    public OrderController(IOrderService orderService, ModelMapper modelMapper, UserService userService, AddressServiceImpl addressService, AuthService authService, AddressRepository addressRepository, OrderItemController orderItemController, OrderItemRepository orderItemRepository) {
+    public OrderController(IOrderService orderService, ModelMapper modelMapper, UserService userService, AddressServiceImpl addressService, AuthService authService, AddressRepository addressRepository, OrderItemController orderItemController, OrderItemRepository orderItemRepository, ProductServiceImpl productServiceImpl) {
         super(Order.class, OrderRequestDTO.class, OrderResponseDTO.class, OrderRequestDTO.class);
         this.orderService = orderService;
         this.modelMapper = modelMapper;
@@ -44,6 +41,7 @@ public class OrderController extends CrudController<Order, OrderRequestDTO, Orde
         this.authService = authService;
         this.addressRepository = addressRepository;
         this.orderItemController = orderItemController;
+        this.productServiceImpl = productServiceImpl;
     }
 
     @PostMapping
@@ -51,7 +49,7 @@ public class OrderController extends CrudController<Order, OrderRequestDTO, Orde
         return ResponseEntity.status(HttpStatus.CREATED).body(convertToDto(getService().save(convertToEntity(entity))));
     }
 
-    public Order convertToEntity(@NotNull OrderRequestDTO dto) {
+    public Order convertToEntity(@Valid OrderRequestDTO dto) {
         User user = authService.getAuthenticatedUser();
 
         Order order = new Order();
@@ -61,12 +59,20 @@ public class OrderController extends CrudController<Order, OrderRequestDTO, Orde
         order.setDate(LocalDateTime.now());
 
         Address address = addressService.findById(dto.getAddressId());
-
         order.setAddress(address);
 
-        List<OrderItem> items = dto.getOrderItems().stream()
-                .map(orderItemController::convertToEntity)
-                .collect(Collectors.toCollection(ArrayList::new));
+        List<OrderItem> items = dto.getOrderItems().stream().map(itemDto -> {
+            OrderItem item = new OrderItem();
+
+            Product product = productServiceImpl.findById(itemDto.getProductId());
+
+            item.setProduct(product);
+            item.setQuantity(itemDto.getQuantity());
+            item.setUnitPrice(product.getPrice());
+            item.setOrder(order);
+
+            return item;
+        }).collect((Collectors.toList()));
 
         order.setOrderItems(items);
 

@@ -1,23 +1,16 @@
 package br.edu.utfpr.pb.pw44s.server.service.impl;
 
 import br.edu.utfpr.pb.pw44s.server.dto.requestdto.OrderItemRequestDTO;
-import br.edu.utfpr.pb.pw44s.server.dto.requestdto.OrderRequestDTO;
-import br.edu.utfpr.pb.pw44s.server.dto.requestdto.ProductUpdateDTO;
-import br.edu.utfpr.pb.pw44s.server.dto.responsedto.OrderResponseDTO;
 import br.edu.utfpr.pb.pw44s.server.model.*;
 import br.edu.utfpr.pb.pw44s.server.repository.AddressRepository;
 import br.edu.utfpr.pb.pw44s.server.repository.OrderRepository;
 import br.edu.utfpr.pb.pw44s.server.service.AuthService;
 import br.edu.utfpr.pb.pw44s.server.service.IOrderService;
 import br.edu.utfpr.pb.pw44s.server.service.IProductService;
-import br.edu.utfpr.pb.pw44s.server.service.UserService;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl extends CrudServiceImpl<Order, Long> implements IOrderService {
@@ -35,7 +28,7 @@ public class OrderServiceImpl extends CrudServiceImpl<Order, Long> implements IO
 
 
     private OrderItem convertToOrderItem(OrderItemRequestDTO dto, Order order) {
-        Product product = productService.findById(dto.getProduct());
+        Product product = productService.findById(dto.getProductId());
 
         OrderItem orderItem = new OrderItem();
         orderItem.setProduct(product);
