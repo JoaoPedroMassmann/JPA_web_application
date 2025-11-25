@@ -26,8 +26,12 @@ public class OrderServiceImpl extends CrudServiceImpl<Order, Long> implements IO
         this.addressRepository = addressRepository;
     }
 
+    public Order findCartForAuthenticatedUser() {
+        Long userId = authService.getAuthenticatedUser().getId();
+        return orderRepository.findCartByUserId(userId).stream().findFirst().orElse(null);
+    }
 
-    private OrderItem convertToOrderItem(OrderItemRequestDTO dto, Order order) {
+    /*private OrderItem convertToOrderItem(OrderItemRequestDTO dto, Order order) {
         Product product = productService.findById(dto.getProductId());
 
         OrderItem orderItem = new OrderItem();
@@ -37,7 +41,7 @@ public class OrderServiceImpl extends CrudServiceImpl<Order, Long> implements IO
         orderItem.setUnitPrice(product.getPrice());
 
         return orderItem;
-    }
+    }*/
 
     @Override
     protected JpaRepository<Order, Long> getRepository() {

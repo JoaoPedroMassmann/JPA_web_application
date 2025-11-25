@@ -25,15 +25,16 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, updatable = false)
     private LocalDateTime date;
 
-    @Column(nullable=false)
+    @Enumerated(EnumType.STRING)
+    private OrderState state = OrderState.CART;
+
     private String paymentMethod;
 
-    @Column(nullable=false)
     private String deliveryMethod;
 
+    @NotNull
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

@@ -1,5 +1,6 @@
 package br.edu.utfpr.pb.pw44s.server.dto.responsedto;
 
+import br.edu.utfpr.pb.pw44s.server.model.OrderState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.List;
 public class OrderResponseDTO {
     private Long id;
 
+    private OrderState orderState;
     private String paymentMethod;
     private String deliveryMethod;
 

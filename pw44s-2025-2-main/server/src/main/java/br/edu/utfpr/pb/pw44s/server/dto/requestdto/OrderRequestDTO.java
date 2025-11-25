@@ -17,16 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class OrderRequestDTO {
-    @NotBlank
     private String paymentMethod;
-
-    @NotBlank
     private String deliveryMethod;
-
-    @NotNull
     private Long addressId;
-
-    @NotNull
-    @Size(min = 1, message = "The order must have at least 1 item.")
-    private List<OrderItemRequestDTO> orderItems;
 }
