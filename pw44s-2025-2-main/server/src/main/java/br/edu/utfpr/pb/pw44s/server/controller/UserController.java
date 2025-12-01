@@ -25,6 +25,7 @@ public class UserController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public void createUser(@Valid @RequestBody User user) {
         this.userService.save( user );
     }

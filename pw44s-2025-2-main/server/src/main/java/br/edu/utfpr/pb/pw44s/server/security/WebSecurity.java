@@ -60,13 +60,16 @@ public class WebSecurity {
         // configura a authorização das requisições
         http.authorizeHttpRequests((authorize) -> authorize
                 //permite que a rota "/users" seja acessada, mesmo sem o usuário estar autenticado desde que o método HTTP da requisição seja POST
+                .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users/**").permitAll()
+
                 //permite que a rota "/error" seja acessada por qualquer requisição mesmo o usuário não estando autenticado
                 .requestMatchers("/error/**").permitAll()
                 //permite que a rota "/h2-console" seja acessada por qualquer requisição mesmo o usuário não estando autenticado
                 .requestMatchers("/h2-console/**").permitAll()
 
                 .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/category/**").permitAll()
 
                 .requestMatchers(HttpMethod.PUT, "/orders/**").denyAll()
                 //A lógica de update de um pedido é incompatível com a utilizada, já que todos os itens não devem ser alterados (user do pedido, horário do pedido, etc.)

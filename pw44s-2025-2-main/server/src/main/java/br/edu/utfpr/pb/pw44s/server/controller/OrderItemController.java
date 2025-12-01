@@ -3,10 +3,7 @@ package br.edu.utfpr.pb.pw44s.server.controller;
 import br.edu.utfpr.pb.pw44s.server.dto.requestdto.OrderItemRequestDTO;
 import br.edu.utfpr.pb.pw44s.server.dto.responsedto.OrderItemResponseDTO;
 import br.edu.utfpr.pb.pw44s.server.dto.updatedto.OrderItemUpdateDTO;
-import br.edu.utfpr.pb.pw44s.server.model.Category;
-import br.edu.utfpr.pb.pw44s.server.model.Order;
-import br.edu.utfpr.pb.pw44s.server.model.OrderItem;
-import br.edu.utfpr.pb.pw44s.server.model.Product;
+import br.edu.utfpr.pb.pw44s.server.model.*;
 import br.edu.utfpr.pb.pw44s.server.service.ICrudService;
 import br.edu.utfpr.pb.pw44s.server.service.IOrderItemService;
 import br.edu.utfpr.pb.pw44s.server.service.impl.OrderServiceImpl;
@@ -48,14 +45,25 @@ public class OrderItemController extends CrudController<OrderItem, OrderItemRequ
         return orderItem;
     }
 
+    @PutMapping("/update_quantity/{itemId}")
+    public ResponseEntity<OrderItemResponseDTO> updateQuantity(
+            @PathVariable Long itemId,
+            @RequestBody @Valid OrderItemUpdateDTO dto) {
+
+        orderItemService.updateQuantity(itemId, dto.getQuantity());
+
+        OrderItem updated = orderItemService.findById(itemId);
+
+        if (updated == null) {
+            return ResponseEntity.ok().body(null);
+        }
+
+        return ResponseEntity.ok(convertToDto(updated));
+    }
+
     @Override
     protected OrderItemResponseDTO convertToDto(OrderItem entity) {
         OrderItemResponseDTO orderItemDTO = super.convertToDto(entity);
-
-        if(entity.getProduct() != null) {
-            orderItemDTO.setProductId(entity.getProduct().getId());
-            orderItemDTO.setProductName(entity.getProduct().getName());
-        }
         return orderItemDTO;
     }
 

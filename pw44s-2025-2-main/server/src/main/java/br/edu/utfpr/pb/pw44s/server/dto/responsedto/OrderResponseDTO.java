@@ -17,13 +17,6 @@ public class OrderResponseDTO {
     private OrderState orderState;
     private String paymentMethod;
     private String deliveryMethod;
-
-    // Buscar o usuário autenticado no SecurityContextHolder
-    // Veio lá do AuthService getAuthenticatedUser()
-    // private User user;
-
-    // A data do pedido vai ficar no model apenas
-    //private LocalDateTime datapedido
     private UserResponseDTO user;
     private LocalDateTime date;
 

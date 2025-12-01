@@ -13,9 +13,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Data
 public class OrderItemUpdateDTO {
-    @DecimalMin(value = "0.01")
-    private BigDecimal unitPrice;
-
-    @Min(value = 1)
+    @Min(0)
     private Integer quantity;
 }

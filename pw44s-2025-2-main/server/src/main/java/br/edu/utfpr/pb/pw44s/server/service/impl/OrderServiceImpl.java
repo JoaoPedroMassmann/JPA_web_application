@@ -31,18 +31,6 @@ public class OrderServiceImpl extends CrudServiceImpl<Order, Long> implements IO
         return orderRepository.findCartByUserId(userId).stream().findFirst().orElse(null);
     }
 
-    /*private OrderItem convertToOrderItem(OrderItemRequestDTO dto, Order order) {
-        Product product = productService.findById(dto.getProductId());
-
-        OrderItem orderItem = new OrderItem();
-        orderItem.setProduct(product);
-        orderItem.setQuantity(dto.getQuantity());
-
-        orderItem.setUnitPrice(product.getPrice());
-
-        return orderItem;
-    }*/
-
     @Override
     protected JpaRepository<Order, Long> getRepository() {
         return orderRepository;
@@ -52,15 +40,4 @@ public class OrderServiceImpl extends CrudServiceImpl<Order, Long> implements IO
         User user = authService.getAuthenticatedUser();
         return orderRepository.findByUser(user);
     }
-
-    /*
-public class PedidoServiceImpl
-   private Pedido save(Pedido pedido) {
-      pedido.setUser(authServicer.getAuthenticatedUser())
-   }
-}
-    fazer: post e get, sem put ou delete.
-
- */
-
 }

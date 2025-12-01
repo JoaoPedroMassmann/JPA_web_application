@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class OrderController extends CrudController<Order, OrderRequestDTO, Orde
         }
     }
 
-    @Transactional
+    /*@Transactional
     @PostMapping("/cart")
     public ResponseEntity<OrderResponseDTO> create() {
         User user = currentUserOrNull();
@@ -81,7 +82,7 @@ public class OrderController extends CrudController<Order, OrderRequestDTO, Orde
 
         Order saved = orderService.save(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(convertToDto(saved));
-    }
+    }*/
 
     @GetMapping("/cart")
     public ResponseEntity<OrderResponseDTO> getCart() {
@@ -106,42 +107,71 @@ public class OrderController extends CrudController<Order, OrderRequestDTO, Orde
         return ResponseEntity.status(HttpStatus.CREATED).body(convertToDto(saved));
     }
 
-    @PostMapping("/{orderId}/items")
+    @PostMapping("/cart/add")
     @Transactional
-    public ResponseEntity<OrderResponseDTO> addItem(@PathVariable Long orderId, @RequestBody @Valid OrderItemRequestDTO dto) {
-        Order order = orderService.findById(orderId);
-        if (order.getState() != OrderState.CART)
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Order is not editable.");
+    public ResponseEntity<OrderResponseDTO> addItem(@RequestBody @Valid OrderItemRequestDTO dto) {
+        User user = currentUserOrNull();
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                    "Non-authenticated users should use client-side cart (localStorage)");
+        }
+
+        Order cart = orderService.findCartForAuthenticatedUser();
+        if(cart == null) {
+            cart = new Order();
+            cart.setState(OrderState.CART);
+            cart.setUser(user);
+            cart.setDate(LocalDateTime.now());
+            cart.setOrderItems(new ArrayList<>());
+            Order saved = orderService.save(cart);
+        }
 
         Product product = productServiceImpl.findById(dto.getProductId());
 
-        OrderItem item = new OrderItem();
+        Optional<OrderItem> existingItemOpt = cart.getOrderItems().stream()
+                .filter(i -> i.getProduct().getId().equals(product.getId()))
+                .findFirst();
 
-        item.setProduct(product);
-        item.setQuantity(dto.getQuantity());
-        item.setUnitPrice(product.getPrice());
-        item.setOrder(order);
-        order.getOrderItems().add(item);
-        orderService.save(order);
+        if(existingItemOpt.isPresent()) {
+            OrderItem existingItem = existingItemOpt.get();
+            existingItem.setQuantity(existingItem.getQuantity() + dto.getQuantity());
+        } else {
+            OrderItem item = new OrderItem();
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(convertToDto(order));
+            item.setProduct(product);
+            item.setQuantity(dto.getQuantity());
+            item.setUnitPrice(product.getPrice());
+            item.setOrder(cart);
+            cart.getOrderItems().add(item);
+        }
+
+        orderService.save(cart);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(convertToDto(cart));
     }
 
-    @DeleteMapping("/{orderId}/items/{itemId}")
+    @DeleteMapping("/cart/items/{itemId}")
     @Transactional
-    public ResponseEntity<OrderResponseDTO> removeItem(@PathVariable Long orderId, @PathVariable Long itemId) {
-        Order order = orderService.findById(orderId);
+    public ResponseEntity<OrderResponseDTO> removeItem(@PathVariable Long itemId) {
+        User user = currentUserOrNull();
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                    "Non-authenticated users should use client-side cart (localStorage)");
+        }
 
-        if(order.getState() != OrderState.CART)
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Order is not editable.");
+        Order cart = orderService.findCartForAuthenticatedUser();
 
-        OrderItem item = order.getOrderItems().stream()
-                .filter(i -> i.getId().equals(itemId)).findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        OrderItem item = cart.getOrderItems().stream()
+                .filter(i -> i.getId().equals(itemId))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Item not found in cart."
+                ));
 
-        order.getOrderItems().remove(item);
+        cart.getOrderItems().remove(item);
         orderItemRepository.delete(item);
 
-        return ResponseEntity.status(HttpStatus.OK).body(convertToDto(order));
+        return ResponseEntity.status(HttpStatus.OK).body(convertToDto(cart));
     }
 
     @PostMapping("/cart/finalize")
