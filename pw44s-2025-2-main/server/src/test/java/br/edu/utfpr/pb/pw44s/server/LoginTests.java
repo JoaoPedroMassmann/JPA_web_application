@@ -64,7 +64,7 @@ public class LoginTests {
 
         ResponseEntity<Object> registerResponse =
                 testRestTemplate.postForEntity("/users", userDTO, Object.class);
-        assertThat(registerResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(registerResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
         var loginPayload = Map.of("username","test-user","password","P4ssword");
 

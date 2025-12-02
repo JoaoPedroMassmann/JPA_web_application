@@ -59,31 +59,6 @@ public class OrderController extends CrudController<Order, OrderRequestDTO, Orde
         }
     }
 
-    /*@Transactional
-    @PostMapping("/cart")
-    public ResponseEntity<OrderResponseDTO> create() {
-        User user = currentUserOrNull();
-
-        if (user == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-                    "Non-authenticated users should use client-side cart (localStorage)");
-        }
-
-        Order existingCart = orderService.findCartForAuthenticatedUser();
-        if(existingCart != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(convertToDto(existingCart));
-        }
-
-        Order order = new Order();
-
-        order.setState(OrderState.CART);
-        order.setUser(user);
-        order.setOrderItems(new ArrayList<>());
-
-        Order saved = orderService.save(order);
-        return ResponseEntity.status(HttpStatus.CREATED).body(convertToDto(saved));
-    }*/
-
     @GetMapping("/cart")
     public ResponseEntity<OrderResponseDTO> getCart() {
         User user = currentUserOrNull();
@@ -204,41 +179,6 @@ public class OrderController extends CrudController<Order, OrderRequestDTO, Orde
 
         return ResponseEntity.status(HttpStatus.OK).body(convertToDto(cart));
     }
-
-
-    /*public Order convertToEntity(@Valid OrderRequestDTO dto) {
-        User user = authService.getAuthenticatedUser();
-
-        Order order = new Order();
-
-        order.setUser(user);
-
-        if(dto.getPaymentMethod() != null) order.setPaymentMethod(dto.getPaymentMethod());
-        if(dto.getDeliveryMethod() != null) order.setDeliveryMethod(dto.getDeliveryMethod());
-        order.setDate(LocalDateTime.now());
-
-        Address address = addressService.findById(dto.getAddressId());
-        order.setAddress(address);
-
-        List<OrderItem> items = dto.getOrderItems().stream().map(itemDto -> {
-            OrderItem item = new OrderItem();
-
-            Product product = productServiceImpl.findById(itemDto.getProductId());
-
-            item.setProduct(product);
-            item.setQuantity(itemDto.getQuantity());
-            item.setUnitPrice(product.getPrice());
-            item.setOrder(order);
-
-            return item;
-        }).collect((Collectors.toList()));
-
-        order.setOrderItems(items);
-
-        Order savedOrder = orderService.save(order);
-
-        return savedOrder;
-    }*/
 
     @Override
     @GetMapping //http://ip-api:port/request-mapping

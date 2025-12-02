@@ -66,7 +66,7 @@ public class UserControllerTest {
         ResponseEntity<Object> response =
                 testRestTemplate.postForEntity("/users", userDTO, Object.class);
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 
     @Test

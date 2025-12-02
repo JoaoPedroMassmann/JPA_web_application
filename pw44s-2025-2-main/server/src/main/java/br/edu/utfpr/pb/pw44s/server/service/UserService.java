@@ -22,7 +22,11 @@ public class UserService {
         userRepository.save(user);
     }
 
-    /*public User findById(Long id) {
-        return userRepository.findById(id).orElse(null);
-    }*/
+    public boolean isUsernameTaken(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    public boolean isEmailTaken(String email) {
+        return userRepository.existsByEmail(email);
+    }
 }

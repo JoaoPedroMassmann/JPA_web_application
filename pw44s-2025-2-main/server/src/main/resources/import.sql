@@ -57,9 +57,9 @@ INSERT INTO tb_product (name, description, price, image_url, category_id) VALUES
 
 -- Orders
 
-INSERT INTO tb_order (date, payment_method, delivery_method, user_id, address_id) VALUES ('2025-09-28T10:00:00', 'credit','Correios', 1, 1);
+INSERT INTO tb_order (date, payment_method, delivery_method, user_id, address_id, state) VALUES ('2025-09-28T10:00:00', 'CREDIT_CARD','DELIVERY', 1, 1, 'order');
 
-INSERT INTO tb_order (date, payment_method, delivery_method, user_id, address_id) VALUES ('2025-09-28T10:00:00', 'credit','Correios', 2, 2);
+INSERT INTO tb_order (date, payment_method, delivery_method, user_id, address_id, state) VALUES ('2025-09-28T10:00:00', 'CREDIT_CARD','PICKUP', 2, 2, 'order');
 
 -- Order items
 
